@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Category Website</title>
+    <style>
+        /* Reset Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header Section */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: #ffffff20;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #ffffff40;
+            transform: translateY(-2px);
+        }
+
+        /* Home Page - Centered Search Bar */
+        #homePage {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px auto;
+            max-width: 600px;
+            gap: 10px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-container button {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .search-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: #ffffff;
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: linear-gradient(45deg, #54a0ff, #00ddeb);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Admin Panel */
+        #adminPage {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #adminPage input[type="file"],
+        #adminPage input[type="text"],
+        #adminPage textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        #adminPage textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        #uploadBtn {
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #uploadBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-container input {
+                width: 100%;
+            }
+
+            .categories {
+                gap: 10px;
+            }
+
+            .category-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                padding: 15px;
+            }
+
+            .image-grid img {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA33E8Durke95nSaEu2eHZ-B2HLmatbeK6WA&s" alt="Profile">
+        </div>
+        <h1>Image Category</h1>
+        <center>
+            <nav>
+                <button class="nav-btn" id="homeBtn">Home</button>
+                <button class="nav-btn" id="profileBtn">Profile</button>
+                <button class="nav-btn" id="searchBtn">Search</button>
+                <button class="nav-btn" id="adminBtn">Admin Panel</button>
+            </nav>
+        </center>
+    </header>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <!-- Centered Search Bar -->
+        <div class="search-container">
+            <input type="text" placeholder="Search images..." id="searchInput">
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <!-- Image Categories -->
+        <div class="categories">
+            <button class="category-btn" data-category="all">All</button>
+            <button class="category-btn" data-category="drawing">Drawing</button>
+            <button class="category-btn" data-category="painting">Painting</button>
+            <button class="category-btn" data-category="3d">3D Image</button>
+            <button class="category-btn" data-category="photography">Photography</button>
+            <button class="category-btn" data-category="nature">Nature</button>
+            <button class="category-btn" data-category="portrait">Portrait</button>
+        </div>
+
+        <!-- Image Gallery -->
+        <div class="image-grid" id="imageGrid"></div>
+    </div>
+
+    <!-- Other Pages -->
+    <div id="profilePage" class="page">
+        <h1>Your Profile</h1>
+        <p>Manage your account and uploads here.</p>
+    </div>
+
+    <div id="searchPage" class="page">
+        <h1>Search Results</h1>
+        <div class="image-grid" id="searchResults"></div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPage" class="page">
+        <h1>Admin Panel</h1>
+        <input type="file" id="imageUpload" accept="image/*">
+        <input type="text" id="imageTitle" placeholder="Enter image title">
+        <textarea id="imagePrompt" placeholder="Enter image prompt"></textarea>
+        <button id="uploadBtn">Upload Image</button>
+    </div>
+
+    <script>
+        // Navigation
+        const pages = document.querySelectorAll('.page');
+        const navButtons = document.querySelectorAll('.nav-btn');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pages.forEach(page => page.classList.remove('active'));
+                document.getElementById(`${button.id.replace('Btn', '')}Page`).classList.add('active');
+            });
+        });
+
+        // Admin Panel - Upload Image
+        const imageUpload = document.getElementById('imageUpload');
+        const imageTitle = document.getElementById('imageTitle');
+        const imagePrompt = document.getElementById('imagePrompt');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const imageGrid = document.getElementById('imageGrid');
+
+        let uploadedImages = [];
+
+        uploadBtn.addEventListener('click', () => {
+            const file = imageUpload.files[0];
+            const title = imageTitle.value;
+            const prompt = imagePrompt.value;
+
+            if (file && title && prompt) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imageData = {
+                        src: e.target.result,
+                        title: title,
+                        prompt: prompt
+                    };
+                    uploadedImages.push(imageData);
+                    displayImage(imageData);
+                    imageUpload.value = '';
+                    imageTitle.value = '';
+                    imagePrompt.value = '';
+                    alert('Image uploaded successfully!');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please upload an image, add a title, and enter a prompt.');
+            }
+        });
+
+        // Display Uploaded Images
+        function displayImage(imageData) {
+            const imgElement = document.createElement('img');
+            imgElement.src = imageData.src;
+            imgElement.alt = imageData.title;
+            imgElement.addEventListener('click', () => showModal(imageData));
+            imageGrid.appendChild(imgElement);
+        }
+    </script>
+</body>
+</html>
